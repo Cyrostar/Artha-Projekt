@@ -1,4 +1,4 @@
-# ComfyUI-Artha-Gemini
+# ComfyUI-Artha-Projekt
 ComfyUI custom nodes for project management.
 
 ## Installation
@@ -8,3 +8,4 @@ ComfyUI custom nodes for project management.
 
 
   `python_embeded\python.exe -m pip install -r ComfyUI\custom_nodes\Artha-Projekt\requirements.txt`
+
