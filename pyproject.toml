@@ -1,7 +1,7 @@
 [project]
 name = "Artha-Projekt"
 description = "ComfyUI custom nodes for project management"
-version = "1.0.1"
+version = "1.0.0"
 license = { file = "LICENSE" }
 dependencies = []
 
@@ -12,5 +12,6 @@ Repository = "https://github.com/Cyrostar/Artha-Projekt"
 PublisherId = "cyrostar"
 DisplayName = "Artha-Projekt"
 Icon = "🔱"
+
 
 
