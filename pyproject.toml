@@ -9,6 +9,7 @@ dependencies = []
 Repository = "https://github.com/Cyrostar/Artha-Projekt"
 
 [tool.comfy]
-PublisherId = "Cyrostar"
+PublisherId = "cyrostar"
 DisplayName = "Artha-Projekt"
 Icon = "🔱"
+
