@@ -25,13 +25,15 @@ class ProjectSetup:
     FUNCTION = "artha_main"
     
     @classmethod
-    def IS_CHANGED(cls, project_name, project_category, project_type, **kwargs):
-    
+    def IS_CHANGED(cls, project_name, project_category, project_type):
+        
         ARTHA_PROJECT_SHARED_DICT['project_name'] = project_name
         ARTHA_PROJECT_SHARED_DICT['project_category'] = project_category
         ARTHA_PROJECT_SHARED_DICT['project_type'] = project_type
+          
+        checker = project_name + project_category + project_type
 
-        return float("nan")
+        return checker
     
     def artha_main(self, project_name, project_category, project_type, **kwargs):
         
@@ -77,9 +79,11 @@ class ProjectPrefix:
     FUNCTION = "artha_main"
     
     @classmethod
-    def IS_CHANGED(cls, **kwargs):  
+    def IS_CHANGED(cls, file_title, file_model, file_media, file_seed):
 
-        return float("nan")
+        checker = file_title + file_model + file_media + str(file_seed)
+
+        return checker
        
     def artha_main(self, file_title, file_model, file_media, file_seed):
         
@@ -138,9 +142,11 @@ class ProjectSeed:
         }
                  
     @classmethod
-    def IS_CHANGED(cls, **kwargs):
+    def IS_CHANGED(cls, seed):
+        
+        checker = seed
 
-        return float("nan") 
+        return checker 
           
     RETURN_TYPES = ("INT","STRING")
     RETURN_NAMES = ("seed","history")
