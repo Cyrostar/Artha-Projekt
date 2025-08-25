@@ -166,15 +166,109 @@ class ProjectSeed:
             history += "TIME " + str(key) + " SEED " + str(value) + "\n"
  
         return (seed,history,)
+        
+class ProjectPause:
+    
+    from server import PromptServer
+    import comfy.model_management
+    import time
+    import json
+    from aiohttp import web
+    
+    CATEGORY = main_cetegory() + "/PRJ"
+    
+    arthaPauseState = False
+        
+    class AnyType(str):
+        
+        def __ne__(self, __value: object) -> bool: return False
+        
+    any = AnyType("*")
+
+    def __init__(cls):       
+        pass 
+
+    @PromptServer.instance.routes.post("/artha/project_toggle_pause_button")
+    async def toggle_pause_state(request):
+               
+        try:
+            
+            data = await request.json()
+            
+            # Toggle the pause state
+            ProjectPause.arthaPauseState = not ProjectPause.arthaPauseState
+            
+            response_data = {
+                "success": True,
+                "paused": ProjectPause.arthaPauseState,
+                "message": f"Pause state changed to: {ProjectPause.arthaPauseState}"
+            }
+                       
+            return ProjectPause.web.json_response(response_data)
+        
+        except Exception as e:
+            
+            return ProjectPause.web.json_response({"success": False, "error": str(e)}, status=500)        
+    
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "input": (cls.any, )
+            }
+        }
+        
+    @classmethod
+    def VALIDATE_INPUTS(cls, **kwargs):
+        return True
+    
+    @classmethod
+    def IS_CHANGED(cls, **kwargs):        
+        return float("NaN")
+
+    RETURN_TYPES = (any,)
+    RETURN_NAMES = ("output",)
+    FUNCTION = "artha_main"
+
+    @classmethod
+    def artha_main(cls, input):
+                              
+        if cls.arthaPauseState:
+                  
+            while cls.arthaPauseState:
+                
+                ProjectPause.time.sleep(0.1)
+                
+                if ProjectPause.comfy.model_management.processing_interrupted():
+                    
+                    print("Artha Project Pause Node: ❌ Processing interrupted - Cancelling")     
+                                       
+                    try:
+    
+                        ProjectPause.PromptServer.instance.send_sync("artha_project_pause_button_reset", {
+                            "node_class": "Project Pause",
+                            "paused": cls.arthaPauseState,
+                            "message": "Reset due to interruption"
+                        })
+                        
+                    except Exception as e:
+                        
+                        print(f"Artha Project Pause Node could not send reset message to frontend: {e}")        
+   
+                    break
+
+        return (input,)
 
 NODE_CLASS_MAPPINGS = {
     "Project Setup": ProjectSetup,
     "Project Prefix": ProjectPrefix,
     "Project Seed": ProjectSeed,
+    "Project Pause": ProjectPause,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
     "Project Setup": node_prefix() + " PROJECT SETUP",
     "Project Prefix": node_prefix() + " PROJECT PREFIX",
     "Project Seed": node_prefix() + " PROJECT SEED",
+    "Project Pause": node_prefix() + " PROJECT PAUSE",
 }
